@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.work.virus.dao.CarMapper" >
+	<resultMap id="BaseResultMap" type="com.work.virus.pojo.Car" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="brand" property="brand" jdbcType="VARCHAR" />
+		<result column="color" property="color" jdbcType="VARCHAR" />
+		<result column="seatnum" property="seatnum" jdbcType="INTEGER" />
+		<result column="oilconsumption" property="oilconsumption" jdbcType="DOUBLE" />
+		<result column="rentnum" property="rentnum" jdbcType="INTEGER" />
+		<result column="opreator" property="opreator" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cars
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+	<insert id="insert" parameterType="com.work.virus.pojo.Car" >
+    insert into cars (id, brand, color,seatnum, oilconsumption, rentnum,opreator)
+    values (#{id,jdbcType=INTEGER}, #{brand,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR},
+      #{seatnum,jdbcType=INTEGER}, #{oilconsumption,jdbcType=DOUBLE},
+      #{rentnum,jdbcType=INTEGER}, #{opreator,jdbcType=VARCHAR})
+  </insert>
+	<update id="updateByPrimaryKey" parameterType="com.work.virus.pojo.Car" >
+    update cars
+    set brand = #{brand,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR},
+      seatnum = #{seatnum,jdbcType=INTEGER},
+      oilconsumption = #{oilconsumption,jdbcType=DOUBLE},
+      rentnum = #{rentnum,jdbcType=INTEGER},
+      opreator =  #{opreator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, brand, color, seatnum, oilconsumption, rentnum,opreator
+    from cars
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+	<select id="selectAll" resultMap="BaseResultMap" >
+    select id, brand, color, seatnum, oilconsumption, rentnum,opreator
+    from cars
+  </select>
+	<!--  //单元格修改方式-->
+	<update id="update" parameterType="java.lang.String" >
+		update cars
+		set
+		<if test="field=='id'">
+			= #{value,jdbcType=INTEGER}
+		</if>
+		<if test="field=='brand'">
+			brand = #{value,jdbcType=VARCHAR}
+		</if>
+		<if test="field=='color'">
+			color = #{value,jdbcType=VARCHAR}
+		</if>
+		<if test="field=='seatnum'">
+			seatnum = #{value,jdbcType=INTEGER}
+		</if>
+		<if test="field=='oilconsumption'">
+			oilconsumption = #{value,jdbcType=DOUBLE}
+		</if>
+		<if test="field=='rentnum'">
+			rentnum = #{value,jdbcType=INTEGER}
+		</if>
+		<if test="field=='opreator'">
+			opreator = #{value,jdbcType=INTEGER}
+		</if>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

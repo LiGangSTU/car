@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.work.virus.dao.BrandMapper" >
+  <resultMap id="BaseResultMap" type="com.work.virus.pojo.Brand" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from brand
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.work.virus.pojo.Brand" >
+    insert into brand (id, brand_name)
+    values (#{id,jdbcType=INTEGER}, #{brandName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.work.virus.pojo.Brand" >
+    update brand
+    set brand_name = #{brandName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, brand_name
+    from brand
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, brand_name
+    from brand
+  </select>
+</mapper>
