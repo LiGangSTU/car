@@ -54,7 +54,12 @@ public class CarController {
             //将id field value 传递给mapper 中对应的方法
             int zhi = carMapper.update(id, field, value);
             System.out.println(zhi);
-            result.setMessage("success");
+            if(zhi == 0){
+                result.setMessage("error");
+            }
+            else{
+                result.setMessage("success");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result.setMessage("error");
@@ -70,6 +75,7 @@ public class CarController {
         String id = UUID.randomUUID().toString();
         try {
             car.setId((int)(Math.random() *10000)-1);
+            car.setOpreator("admin");
             int insert = carMapper.insert(car);
             if(insert != 0){
                 System.out.println("success");

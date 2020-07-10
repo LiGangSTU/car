@@ -38,7 +38,7 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
             ,{field: 'seatnum', title: '座位数', align:'center',edit:"text"}
             ,{field: 'oilconsumption', title: '每公里油耗', align:'center',edit:"text"}
             ,{field: 'rentnum', title: '日租金', align:'center',edit:"text"}
-            ,{field: 'opreator', title: '记录员', align:'center',edit:"text"}
+            ,{field: 'opreator', title: '记录员', align:'center'}
         ]]
     });
     //监听单元格编辑
@@ -160,12 +160,14 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
                 });
             },
             error : function(res){
+                parent.layer.alert("ERROR",{icon:2},function () {
+                    // 点击确定之后刷新父窗口
+                    window.parent.location.reload();
+                });
                 console.log("failure");
-               // parent.layer.alert(res.message,{icon: 2});
             }
         })
     })
-
 });
 
 
