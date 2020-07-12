@@ -7,9 +7,26 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
         ,upload = layui.upload //上传
         ,element = layui.element //元素操作
         ,slider = layui.slider //滑块
+        ,form1 = layui.form ;//表格
     // 不用单独引入  jquery 了  jquery已经  封到layui.js里
+    //执行一个laydate实例
     var $ = layui.jquery;
 
+    laydate.render({
+        elem: '#test1' //指定元素
+        ,btns: ['clear', 'now']
+        ,trigger: 'click'
+    });
+    laydate.render({
+        elem: '#start_time' //指定元素
+        ,btns: ['clear', 'now']
+        ,trigger: 'click'
+    });
+    laydate.render({
+        elem: '#end_time' //指定元素
+        ,btns: ['clear', 'now']
+        ,trigger: 'click'
+    });
     //向世界问个好
     layer.msg('汽车数据');
 
@@ -37,8 +54,12 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
             ,{field: 'color', title: '颜色', align:'center',edit:"text"}
             ,{field: 'seatnum', title: '座位数', align:'center',edit:"text"}
             ,{field: 'oilconsumption', title: '每公里油耗', align:'center',edit:"text"}
+            ,{field: 'birthtime', title: '生产日期',
+                templet:'<div>{{ layui.util.toDateString(d.birthtime, "yyyy-MM-dd") }}</div>' ,align:'center'}
             ,{field: 'rentnum', title: '日租金', align:'center',edit:"text"}
             ,{field: 'opreator', title: '记录员', align:'center'}
+            ,{field: 'createtime', title: '添加日期',
+                templet:'<div>{{ layui.util.toDateString(d.createtime, "yyyy-MM-dd") }}</div>' , align:'center'}
         ]]
     });
     //监听单元格编辑
@@ -135,20 +156,113 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
                 break;
         }
     });
-
+    //下拉选择
+    form1.on('select(brand)', function(data){
+        console.log("下拉选择"+data.valueOf());
+        // var inputVal = $("#hidGuideType").val();
+        $.ajax({
+            url: '/index/brand/findOrgTypeList',
+            dataType: 'json',
+            data:{'state': 0},	//查询状态为正常的所有机构类型
+            contentType: "application/json; charset=utf-8",
+            type: 'post',
+            success: function (data) {
+                console.log(data.item);
+               // $("#brandtype").empty();
+                $.each(data.item, function (index, item) {
+                    console.log(item.brandName);
+                    $('#brandtype').append(new Option(item.brandName,item.id));// 下拉菜单里添加元素
+                });
+               // console.log($('#brandtype').val(value()));
+                //$("#hidGuideType").val(data.item.brandName);
+                // if(data.item.brandName !== inputVal ){
+                //     $(#hidGuideType).change();
+                // }
+                // $(#hidGuideType).val(data.value);
+                layui.form.render("select");
+            },
+            error:function (res) {
+                console.log("failure "+res.message);
+            }
+        })
+    });
+    //input值发生变化事件
+    $("#hidGuideType").on('change',function(){
+        console.log('layui下拉框的值发生了变化');
+    });
+    //搜索
+    //写一个点击事件,当点击搜索按钮时
+    // $("#rebybrand").on("click",function() {
+    //     //搜索的功能
+    //     //表格重载函数
+    //     console.log("要进行表格重载");
+    //     console.log($("#brandlike").val());
+    //     table.reload('demo', {
+    //         url :"/index/car/queryByBrand",//会自动把page和limit加到后边，便于查询
+    //         where: { //设定异步数据接口的额外参数，任意设
+    //             //获取传进来的省份名
+    //             brand:$("#brandlike").val()
+    //         }
+    //         ,page: {
+    //             curr: 1 //重新从第 1 页开始
+    //         }
+    //     }); //只重载数据
+    // });
+    // //精准查询颜色
+    // $("#rebycolor").on("click",function() {
+    //     //搜索的功能
+    //     //表格重载函数
+    //     console.log("要进行表格重载");
+    //     console.log($("#colorlike").val());
+    //     table.reload('demo', {
+    //         url :"/index/car/queryByColor",//会自动把page和limit加到后边，便于查询
+    //         where: { //设定异步数据接口的额外参数，任意设
+    //             //获取传进来的省份名
+    //             color:$("#colorlike").val()
+    //         }
+    //         ,page: {
+    //             curr: 1 //重新从第 1 页开始
+    //         }
+    //     }); //只重载数据
+    // });
     //城市相关信息 表单上传
+    $("#rebytime").on("click",function () {
+        table.reload('demo', {
+            url :"/index/car/queryByTarget",//会自动把page和limit加到后边，便于查询
+            where: { //设定异步数据接口的额外参数，任意设
+                start_time:$("#start_time").val(),
+                end_time:$("#end_time").val(),
+                brand:$("#brandlike").val(),
+                color:$("#colorlike").val()
+            }
+            ,page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        }); //只重载数据
+    });
     $("#submit").on("click",function () {
         alert("你要增加汽车了！");
         //获取表单的原生对象 两种获得方法 指的是JavaScript的节点对象
         //ajax与后台传值
         var fd2 = $("#form1")[0];
-        console.log(fd2.valueOf());
+        console.log(fd2);
         var formdata = new FormData(fd2);
+        for (var [a, b] of formdata.entries()) {
+            console.log(a, b);
+        }
+        var objData = {};
+        for (var entry of formdata.entries()){
+            objData['"'+entry[0]+'"'] = entry[1];
+        }
+        // formdata.forEach((value, key) => objData[eval('(' + key + ')')] = value);
+        console.log(objData);
+        console.log(JSON.toString(objData).valueOf());
         $.ajax({
             url :"/index/car/add",
-            type :"post",
+            type :"POST",
             data :formdata,
-            dataType :"json",
+            dataType :"",
+            //contentType: "application/json; charset=utf-8",
             async: false,
             cache: false,
             contentType : false, //防止jQuery对其操作产生不好的影响

@@ -3,34 +3,34 @@
 <mapper namespace="com.work.virus.dao.ChangeMapper" >
   <resultMap id="BaseResultMap" type="com.work.virus.pojo.Change" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="opreator" property="opreator" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="opreator" property="opreator" jdbcType="VARCHAR" />
+    <result column="o_type" property="oType" jdbcType="VARCHAR" />
     <result column="change_time" property="changeTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from change
+    delete from changeing
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.work.virus.pojo.Change" >
-    insert into change (id, opreator, type, 
+    insert into changeing (id, opreator, o_type, 
       change_time)
-    values (#{id,jdbcType=INTEGER}, #{opreator,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{opreator,jdbcType=VARCHAR}, #{oType,jdbcType=VARCHAR}, 
       #{changeTime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.work.virus.pojo.Change" >
-    update change
-    set opreator = #{opreator,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+    update changeing
+    set opreator = #{opreator,jdbcType=VARCHAR},
+      o_type = #{oType,jdbcType=VARCHAR},
       change_time = #{changeTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, opreator, type, change_time
-    from change
+    select id, opreator, o_type, change_time
+    from changeing
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, opreator, type, change_time
-    from change
+    select id, opreator, o_type, change_time
+    from changeing
   </select>
 </mapper>

@@ -6,9 +6,9 @@ import java.util.Date;
 public class Change implements Serializable {
     private Integer id;
 
-    private Integer opreator;
+    private String opreator;
 
-    private Integer type;
+    private String oType;
 
     private Date changeTime;
 
@@ -22,20 +22,20 @@ public class Change implements Serializable {
         this.id = id;
     }
 
-    public Integer getOpreator() {
+    public String getOpreator() {
         return opreator;
     }
 
-    public void setOpreator(Integer opreator) {
-        this.opreator = opreator;
+    public void setOpreator(String opreator) {
+        this.opreator = opreator == null ? null : opreator.trim();
     }
 
-    public Integer getType() {
-        return type;
+    public String getoType() {
+        return oType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setoType(String oType) {
+        this.oType = oType == null ? null : oType.trim();
     }
 
     public Date getChangeTime() {

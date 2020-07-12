@@ -1,6 +1,7 @@
 package com.work.virus.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Car implements Serializable {
     private Integer id;
@@ -13,9 +14,13 @@ public class Car implements Serializable {
 
     private Float oilconsumption;
 
+    private Date birthtime;
+
     private Integer rentnum;
 
     private String opreator;
+
+    private Date createtime;
 
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +64,14 @@ public class Car implements Serializable {
         this.oilconsumption = oilconsumption;
     }
 
+    public Date getBirthtime() {
+        return birthtime;
+    }
+
+    public void setBirthtime(Date birthtime) {
+        this.birthtime = birthtime;
+    }
+
     public Integer getRentnum() {
         return rentnum;
     }
@@ -73,5 +86,13 @@ public class Car implements Serializable {
 
     public void setOpreator(String opreator) {
         this.opreator = opreator == null ? null : opreator.trim();
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 }

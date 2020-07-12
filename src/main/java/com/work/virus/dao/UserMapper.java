@@ -1,8 +1,6 @@
 package com.work.virus.dao;
 
 import com.work.virus.pojo.User;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 public interface UserMapper {
@@ -11,10 +9,8 @@ public interface UserMapper {
     int insert(User record);
 
     User selectByPrimaryKey(String id);
-
+    User selectUserByname(String username);
     List<User> selectAll();
 
     int updateByPrimaryKey(User record);
-
-    User selectUserByname(@Param("username") String username);
 }

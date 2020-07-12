@@ -2,23 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.work.virus.dao.CarMapper" >
 	<resultMap id="BaseResultMap" type="com.work.virus.pojo.Car" >
-		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="id" property="id" jdbcType="INTEGER" />
 		<result column="brand" property="brand" jdbcType="VARCHAR" />
 		<result column="color" property="color" jdbcType="VARCHAR" />
 		<result column="seatnum" property="seatnum" jdbcType="INTEGER" />
-		<result column="oilconsumption" property="oilconsumption" jdbcType="DOUBLE" />
+		<result column="oilconsumption" property="oilconsumption" jdbcType="REAL" />
+		<result column="birthtime" property="birthtime" jdbcType="TIMESTAMP" />
 		<result column="rentnum" property="rentnum" jdbcType="INTEGER" />
 		<result column="opreator" property="opreator" jdbcType="VARCHAR" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from cars
     where id = #{id,jdbcType=INTEGER}
   </delete>
 	<insert id="insert" parameterType="com.work.virus.pojo.Car" >
-    insert into cars (id, brand, color,seatnum, oilconsumption, rentnum,opreator)
+    insert into cars (id, brand, color,
+      seatnum, oilconsumption, birthtime,
+      rentnum, opreator, createtime
+      )
     values (#{id,jdbcType=INTEGER}, #{brand,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR},
-      #{seatnum,jdbcType=INTEGER}, #{oilconsumption,jdbcType=DOUBLE},
-      #{rentnum,jdbcType=INTEGER}, #{opreator,jdbcType=VARCHAR})
+      #{seatnum,jdbcType=INTEGER}, #{oilconsumption,jdbcType=REAL}, #{birthtime,jdbcType=TIMESTAMP},
+      #{rentnum,jdbcType=INTEGER}, #{opreator,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+      )
   </insert>
 	<update id="updateByPrimaryKey" parameterType="com.work.virus.pojo.Car" >
     update cars
@@ -26,19 +32,61 @@
       color = #{color,jdbcType=VARCHAR},
       seatnum = #{seatnum,jdbcType=INTEGER},
       oilconsumption = #{oilconsumption,jdbcType=DOUBLE},
+      birthtime = #{birthtime.jdbcType=TIMESTAMP},
       rentnum = #{rentnum,jdbcType=INTEGER},
-      opreator =  #{opreator,jdbcType=VARCHAR}
+      opreator =  #{opreator,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
     where id = #{id,jdbcType=INTEGER}
   </update>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select id, brand, color, seatnum, oilconsumption, rentnum,opreator
+    select id, brand, color, seatnum, oilconsumption, birthtime, rentnum, opreator, createtime
     from cars
     where id = #{id,jdbcType=INTEGER}
   </select>
 	<select id="selectAll" resultMap="BaseResultMap" >
-    select id, brand, color, seatnum, oilconsumption, rentnum,opreator
+    select id, brand, color, seatnum, oilconsumption, birthtime, rentnum, opreator, createtime
     from cars
   </select>
+	<select id="queryByBrand" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select *
+		from cars
+		where brand = #{brand};
+	</select>
+	<select id="selectBybrand" resultMap="BaseResultMap" >
+    select * from cars
+    where brand like concat('%',#{brand},'%') limit #{page},#{pageTotal}
+  </select>
+	<select id="selectByColor" resultMap="BaseResultMap" >
+	    select * from cars
+	    where color = #{color}
+	    limit #{page},#{pageTotal}
+  </select>
+	<select id="selectByTime" resultMap="BaseResultMap" >
+	    select * from cars
+	    where birthtime between #{date1} and  date_add(#{date2},interval 1 day)
+	    limit #{page},#{pageTotal}
+  </select>
+	<select id="selectByColorTime" resultMap="BaseResultMap" >
+	    select * from cars
+	    where  color = #{color} and birthtime between #{date1} and  date_add(#{date2},interval 1 day)
+	    limit #{page},#{pageTotal}
+  </select>
+	<select id="selectByBrandTime" resultMap="BaseResultMap" >
+	    select * from cars
+	    where  brand = #{brand} and birthtime between #{date1} and  date_add(#{date2},interval 1 day)
+	    limit #{page},#{pageTotal}
+  </select>
+	<select id="selectByColorBrand" resultMap="BaseResultMap" >
+	    select * from cars
+	    where  brand = #{brand}	and color = #{color}
+	    limit #{page},#{pageTotal}
+  </select>
+	<select id="queryByTarget" resultMap="BaseResultMap">
+		select *
+		from cars
+		where  brand = #{brand}	and color = #{color}and birthtime between #{date1} and  date_add(#{date2},interval 1 day)
+		limit #{page},#{pageTotal};
+	</select>
 	<!--  //单元格修改方式-->
 	<update id="update" parameterType="java.lang.String" >
 		update cars
