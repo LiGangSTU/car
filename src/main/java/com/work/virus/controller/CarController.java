@@ -97,7 +97,7 @@ public class CarController {
     @RequestMapping("/add")
     @ResponseBody
     public Result add(String brand,String color,String seatnum ,String oilconsumption ,String birthtime,
-                      String rentnum ,HttpServletRequest request){
+                      String rentnum ,String carImg,HttpServletRequest request){
         Car car = new Car();
         System.out.println(brand+" "+color+" "+seatnum+" "+oilconsumption+" "+birthtime+" "+rentnum);
         Result result = new Result();
@@ -121,6 +121,7 @@ public class CarController {
             car.setOilconsumption(Float.parseFloat(oilconsumption));
             car.setBirthtime(date2);
             car.setRentnum(Integer.parseInt(rentnum));
+            car.setCarImg(carImg);
             car.setOpreator("admin");
             car.setCreatetime(date);
             int insert = carMapper.insert(car);

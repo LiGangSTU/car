@@ -17,12 +17,20 @@ public class Car implements Serializable {
     private Date birthtime;
 
     private Integer rentnum;
-
+    private  String carImg;
     private String opreator;
 
     private Date createtime;
 
     private static final long serialVersionUID = 1L;
+
+    public String getCarImg() {
+        return carImg;
+    }
+
+    public void setCarImg(String carImg) {
+        this.carImg = carImg;
+    }
 
     public Integer getId() {
         return id;

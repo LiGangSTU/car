@@ -57,6 +57,8 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
             ,{field: 'birthtime', title: '生产日期',
                 templet:'<div>{{ layui.util.toDateString(d.birthtime, "yyyy-MM-dd") }}</div>' ,align:'center'}
             ,{field: 'rentnum', title: '日租金', align:'center',edit:"text"}
+            , {field: 'carImg', title: '缩略图', width: 180, align: 'center', templet: function (res) {
+                    return "<img width=40 height=30 src=/index/file/downloadFile?path=" + res.carImg + "/>";}}
             ,{field: 'opreator', title: '记录员', align:'center'}
             ,{field: 'createtime', title: '添加日期',
                 templet:'<div>{{ layui.util.toDateString(d.createtime, "yyyy-MM-dd") }}</div>' , align:'center'}
@@ -282,6 +284,32 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
             }
         })
     })
+
+    //查看大图
+    // function showBigCarImg(data) {
+    //     mainIndex = layer.open({
+    //         type: 1,
+    //         title: '【'+data.brand+'】的车辆大图',
+    //         content: $("#viewBigCarImg"),
+    //         area: ['750px', '500px'],
+    //         success: function (index) {
+    //             $("#viewCarImg").attr("src","index/file/downloadFile?path="+data.carImg);
+    //         }
+    //     });
+    // }
+    //上传缩略图
+    upload.render({
+        elem: '#carImgDiv',
+        url: '../file/uploadFile',
+        acceptMime: 'image/*',
+        field: 'upload',
+        done: function (res, index, upload) {
+            // $('#showCarImg').attr('src', 'index/file/downloadFile?path=' + res.data.src);
+            $('#viewBigCarImg').attr('src', '../file/downloadFile?path=' + res.data.src);
+            $('#carImg').val(res.data.src);
+            $('#carImgDiv').css("background", "#fff");
+        }
+    });
 });
 
 

@@ -9,6 +9,7 @@
 		<result column="oilconsumption" property="oilconsumption" jdbcType="REAL" />
 		<result column="birthtime" property="birthtime" jdbcType="TIMESTAMP" />
 		<result column="rentnum" property="rentnum" jdbcType="INTEGER" />
+		<result column="carImg" property="carImg" jdbcType="VARCHAR" />
 		<result column="opreator" property="opreator" jdbcType="VARCHAR" />
 		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
 	</resultMap>
@@ -19,11 +20,12 @@
 	<insert id="insert" parameterType="com.work.virus.pojo.Car" >
     insert into cars (id, brand, color,
       seatnum, oilconsumption, birthtime,
-      rentnum, opreator, createtime
+      rentnum, carImg,opreator, createtime
       )
     values (#{id,jdbcType=INTEGER}, #{brand,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR},
       #{seatnum,jdbcType=INTEGER}, #{oilconsumption,jdbcType=REAL}, #{birthtime,jdbcType=TIMESTAMP},
-      #{rentnum,jdbcType=INTEGER}, #{opreator,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+      #{rentnum,jdbcType=INTEGER},#{carImg,jdbcType=VARCHAR},
+       #{opreator,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
       )
   </insert>
 	<update id="updateByPrimaryKey" parameterType="com.work.virus.pojo.Car" >
@@ -34,17 +36,18 @@
       oilconsumption = #{oilconsumption,jdbcType=DOUBLE},
       birthtime = #{birthtime.jdbcType=TIMESTAMP},
       rentnum = #{rentnum,jdbcType=INTEGER},
+      carImg = #{carImg,jdbcType=VARCHAR},
       opreator =  #{opreator,jdbcType=VARCHAR},
       createtime = #{createtime,jdbcType=TIMESTAMP},
     where id = #{id,jdbcType=INTEGER}
   </update>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select id, brand, color, seatnum, oilconsumption, birthtime, rentnum, opreator, createtime
+    select id, brand, color, seatnum, oilconsumption, birthtime, rentnum, carImg,opreator, createtime
     from cars
     where id = #{id,jdbcType=INTEGER}
   </select>
 	<select id="selectAll" resultMap="BaseResultMap" >
-    select id, brand, color, seatnum, oilconsumption, birthtime, rentnum, opreator, createtime
+    select id, brand, color, seatnum, oilconsumption, birthtime, rentnum, carImg,opreator, createtime
     from cars
   </select>
 	<select id="queryByBrand" parameterType="java.lang.String" resultMap="BaseResultMap">
